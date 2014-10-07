@@ -2,7 +2,7 @@ package com.gmail.sleepy771.earthmotionsimulator;
 
 import Jama.Matrix;
 
-public interface Body {
+public interface Body extends SystemUnit {
 	Matrix getMomentum();
 	
 	Matrix getPosition();
@@ -11,7 +11,5 @@ public interface Body {
 	
 	double getMass();
 	
-	void setMomentum(Matrix p);
-	
-	void setPosition(Matrix r);
+	int signature();
 }
