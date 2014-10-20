@@ -1,5 +1,5 @@
 package com.gmail.sleepy771.earthmotionsimulator;
 
-public interface SystemUnit {
-	Object getId();
+public interface Loadable {
+	void onLoad();
 }

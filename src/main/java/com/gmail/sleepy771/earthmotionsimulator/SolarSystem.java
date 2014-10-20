@@ -3,18 +3,50 @@ package com.gmail.sleepy771.earthmotionsimulator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SolarSystem implements SimulationSystem<Body> {
 	
 	private ESCondition endCond;
+	private Lock streamerLock;
 	private Iterator<Body> bodyIterator;
 	private SimulationExecutor executor;
 	private List<Body> bodies;
 	private List<Body> movedBodies;
+	private DataServer<Void, SpaceSimulationRecord> server;
+	private Thread streamerThread;
+	private Runnable pusherRunnable;
+	private double simulationTime;
+	private double dt;
 	
-	public SolarSystem() {
+	public SolarSystem(double startTime, double dt, List<Body> bodies, SimulationExecutor simExec, DataServer<Void, SpaceSimulationRecord> server, ESCondition endCondition) {
+		this.endCond = endCondition;
+		this.executor = simExec;
+		this.server = server;
+		this.bodies = new ArrayList<Body>(bodies);
+		streamerLock = new ReentrantLock();
+		simulationTime = startTime;
+		this.dt = dt;
+		pusherRunnable = new Runnable() {
+			@Override
+			public void run() {
+				while (!SolarSystem.this.getEndCondition().satisfies()) {
+					SolarSystem.this.server.insertRecord(new SpaceSimulationRecord(getUnits(), getSimulationTime()));
+				}
+			}
+		};
 	}
-
+	
+	public double getSimulationTime() {
+		streamerLock.lock();
+		try {
+			return simulationTime;
+		} finally {
+			streamerLock.unlock();
+		}
+	}
+	
 	@Override
 	public void runSimulation() {
 		getSimulationExecutor().runSimulation();
@@ -41,8 +73,8 @@ public class SolarSystem implements SimulationSystem<Body> {
 	}
 	
 	private Iterator<Body> getIterator() {
-		if (bodyIterator == null) {
-			bodyIterator = bodies.iterator();
+		if (bodyIterator == null || !bodyIterator.hasNext()) {
+			bodyIterator = new UnmodifiableIterator<Body>(bodies.iterator());
 		}
 		return bodyIterator;
 	}
@@ -95,9 +127,21 @@ public class SolarSystem implements SimulationSystem<Body> {
 			movedBodies = new ArrayList<>();
 		return movedBodies;
 	}
+	
+	public Thread getStreamerThread() {
+		if (streamerThread != null || !streamerThread.isAlive())
+			streamerThread = new Thread(pusherRunnable);
+		return streamerThread;
+	}
 
 	@Override
 	public void fireUpdate() {
-		setUnits(getMovedUnits());
+		streamerLock.lock();
+		try {
+			setUnits(getMovedUnits());
+			simulationTime += dt;
+		} finally {
+			streamerLock.unlock();
+		}
 	}
 }

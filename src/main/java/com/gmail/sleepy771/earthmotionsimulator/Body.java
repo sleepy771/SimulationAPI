@@ -10,6 +10,4 @@ public interface Body extends SystemUnit {
 	Matrix getSpeed();
 	
 	double getMass();
-	
-	int signature();
 }

@@ -5,21 +5,21 @@ import Jama.Matrix;
 public class Planet implements Body {
 	private final Matrix p, r;
 	private final double m;
-	private final int sgn;
+	private final Object id;
 	
-	public Planet(int sgn, double mass, Matrix p, Matrix r) {
+	public Planet(Object id, double mass, Matrix p, Matrix r) {
 		this.r = r;
 		this.m = mass;
 		this.p = p;
-		this.sgn = sgn;
+		this.id = id;
 	}
 	
 	public Planet(Planet p) {
-		this(p.sgn, p.m, p.p, p.r);
+		this(p.id, p.m, p.p, p.r);
 	}
 	
 	public Planet(Planet planet, Matrix p, Matrix r) {
-		this(planet.sgn, planet.m, p, r);
+		this(planet.id, planet.m, p, r);
 	}
 	
 	
@@ -42,9 +42,9 @@ public class Planet implements Body {
 	public double getMass() {
 		return m;
 	}
-	
-	public int signature() {
-		return sgn;
+
+	@Override
+	public Object getId() {
+		return id;
 	}
-	
 }
