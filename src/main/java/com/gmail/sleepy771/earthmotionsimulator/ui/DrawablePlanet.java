@@ -13,130 +13,122 @@ public class DrawablePlanet implements DrawableString, DrawableShape {
 
 	private final DrawableShape shape;
 	private final DrawableString text;
+	private AffineTransform transform;
+	private Point2D position;
 	
 	public DrawablePlanet(DrawableShape sh, DrawableString st) {
 		shape = sh;
 		text = st;
+		shape.setAffineTransform(getAffineTransform());
+		text.setAffineTransform(getAffineTransform());
 	}
 	
 	@Override
 	public void setPosition(Point2D p) {
-		// TODO Auto-generated method stub
-		
+		text.setPosition(position);
+		shape.setPosition(position);
+		position = p;
 	}
 
 	@Override
 	public Point2D getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		return position;
 	}
 
 	@Override
 	public void draw(Graphics2D g2d) {
-		// TODO Auto-generated method stub
-		
+		shape.draw(g2d);
+		text.draw(g2d);
 	}
 
 	@Override
 	public void setAffineTransform(AffineTransform af) {
-		// TODO Auto-generated method stub
-		
+		this.transform = af;
+		text.setAffineTransform(transform);
+		shape.setAffineTransform(transform);
 	}
 
 	@Override
 	public AffineTransform getAffineTransform() {
-		// TODO Auto-generated method stub
-		return null;
+		if (transform == null) {
+			transform = new AffineTransform();
+		}
+		return transform;
 	}
 
 	@Override
 	public void setColor(Color c) {
-		// TODO Auto-generated method stub
-		
+		text.setColor(c);
 	}
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return text.getColor();
 	}
 
 	@Override
 	public void setShape(Shape s) {
-		// TODO Auto-generated method stub
-		
+		shape.setShape(s);
 	}
 
 	@Override
 	public void setFill(boolean fill) {
-		// TODO Auto-generated method stub
-		
+		shape.setFill(fill);
 	}
 
 	@Override
 	public void setFillColor(Color fillColor) {
-		// TODO Auto-generated method stub
-		
+		shape.setFillColor(fillColor);
 	}
 
 	@Override
 	public void setStroke(boolean stroke) {
-		// TODO Auto-generated method stub
-		
+		shape.setStroke(stroke);
 	}
 
 	@Override
 	public void setStrokeWidth(double width) {
-		// TODO Auto-generated method stub
-		
+		shape.setStrokeWidth(width);
 	}
 
 	@Override
 	public void setStrokePattern(Stroke stroke) {
-		// TODO Auto-generated method stub
-		
+		shape.setStrokePattern(stroke);
 	}
 
 	@Override
 	public void setStrokeColor(Color strokeColor) {
-		// TODO Auto-generated method stub
-		
+		shape.setStrokeColor(strokeColor);
 	}
 
 	@Override
 	public Color getFillColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return shape.getFillColor();
 	}
 
 	@Override
 	public void setText(String str) {
-		// TODO Auto-generated method stub
-		
+		text.setText(str);
 	}
 
 	@Override
 	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
+		return text.getText();
 	}
 
 	@Override
 	public void setFont(Font f) {
-		// TODO Auto-generated method stub
-		
+		text.setFont(f);
 	}
 
 	@Override
 	public Font getFont() {
-		// TODO Auto-generated method stub
-		return null;
+		return text.getFont();
 	}
 
 	@Override
 	public Dimension2D getSize() {
-		// TODO Auto-generated method stub
-		return null;
+		return shape.getSize();
 	}
 
 }
