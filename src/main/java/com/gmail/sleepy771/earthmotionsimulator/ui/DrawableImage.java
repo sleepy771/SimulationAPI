@@ -3,7 +3,7 @@ package com.gmail.sleepy771.earthmotionsimulator.ui;
 import java.awt.Image;
 import java.awt.geom.Dimension2D;
 
-public interface DrawableImage extends Drawable {
+public interface DrawableImage extends PointDrawable {
 	void setImage(Image img);
 	
 	Image getImage();

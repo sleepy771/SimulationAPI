@@ -4,4 +4,6 @@ public interface ESCondition {
 	boolean satisfies();
 
 	void forceFalse();
+	
+	void forceTrue();
 }

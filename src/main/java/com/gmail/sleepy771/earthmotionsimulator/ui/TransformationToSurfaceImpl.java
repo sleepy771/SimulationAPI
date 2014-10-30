@@ -89,12 +89,14 @@ public class TransformationToSurfaceImpl implements TransformationToSurface {
 	@Override
 	public void setSurfaceNormal(Matrix n) {
 		this.normal = n;
+		calculateNormalAndAngle(n);
 	}
 
 	@Override
 	public Point2D transformToSurface(Matrix vec) {
-		// TODO Auto-generated method stub
-		return null;
+		Matrix trans = transform(vec);
+		Point2D p = new Point2D.Double(trans.get(0, 0), trans.get(1, 0));
+		return p;
 	}
 	
 	private void calculateNormalAndAngle(Matrix sN) {
@@ -102,6 +104,7 @@ public class TransformationToSurfaceImpl implements TransformationToSurface {
 		Matrix normal = new Matrix(new double[] {sN.get(1, 0), -sN.get(0, 0), 0}, 3);
 		normal.times(1./normal.normF());
 		double angle = Math.acos(sN.get(2, 0)/sN.normF());
+		setRotation(normal, angle);
 	}
 
 }

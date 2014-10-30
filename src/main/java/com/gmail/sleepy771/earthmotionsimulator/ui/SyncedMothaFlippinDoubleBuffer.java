@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.VolatileImage;
+import java.util.Observable;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -42,7 +43,6 @@ public class SyncedMothaFlippinDoubleBuffer {
 						bufferLock.lock();
 						try {
 							canRender.await();
-							invokeReceiver();
 							renderOffscreen();
 						} finally {
 							bufferLock.unlock();
@@ -127,8 +127,5 @@ public class SyncedMothaFlippinDoubleBuffer {
 		} finally {
 			bufferLock.unlock();
 		}
-	}
-	
-	public void invokeReceiver(){
 	}
 }

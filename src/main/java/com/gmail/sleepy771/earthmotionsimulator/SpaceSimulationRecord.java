@@ -1,18 +1,23 @@
 package com.gmail.sleepy771.earthmotionsimulator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpaceSimulationRecord implements Response {
 	
-	private final List<Body> bodies;
+	private final Map<Object, Body> bodies;
 	private final double time;
 	
 	public SpaceSimulationRecord(List<Body> bodies, double time) {
-		this.bodies = bodies;
+		this.bodies = new HashMap<>();
+		for (Body b : bodies) {
+			this.bodies.put(b.getId(), b);
+		}
 		this.time = time;
 	}
 	
-	public List<Body> getBodies() {
+	public Map<Object, Body> getBodies() {
 		return this.bodies;
 	}
 	

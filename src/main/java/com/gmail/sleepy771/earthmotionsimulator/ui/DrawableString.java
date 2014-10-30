@@ -1,7 +1,13 @@
 package com.gmail.sleepy771.earthmotionsimulator.ui;
 
-public interface DrawableString extends Drawable {
+import java.awt.Font;
+
+public interface DrawableString extends PointDrawable {
 	void setText(String str);
 	
 	String getText();
+	
+	void setFont(Font f);
+	
+	Font getFont();
 }

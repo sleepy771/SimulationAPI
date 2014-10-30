@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 
-public interface DrawableShape extends Drawable {
+public interface DrawableShape extends PointDrawable {
 	void setShape(Shape s);
 	
 	void setFill(boolean fill);

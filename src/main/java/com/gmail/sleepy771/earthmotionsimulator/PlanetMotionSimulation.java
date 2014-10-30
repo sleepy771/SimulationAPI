@@ -30,7 +30,6 @@ public class PlanetMotionSimulation implements Simulation {
 		}
 		Matrix newMomentum = body.getMomentum().plus(f.times(dt));
 		s.getMovedUnits().add(body = new Planet(this.body, newMomentum, newPosistion));
-		//s.getMovedUnits().add(body.getId(), body = new Planet(body, newMomentum, newPosistion));
 	}
 
 	@Override

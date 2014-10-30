@@ -11,16 +11,6 @@ public interface SimulationSystem<T extends SystemUnit> {
 	
 	void fireUpdate();
 	
-	void setEndCondition(ESCondition cond);
-	
-	ESCondition getEndCondition();
-	
-	void setSimulationExecutor(SimulationExecutor exec);
-	
-	SimulationExecutor getSimulationExecutor();
-	
-	void runSimulation();
-
 	Simulation createSimualtion();
 
 	boolean canCreateSimulation();

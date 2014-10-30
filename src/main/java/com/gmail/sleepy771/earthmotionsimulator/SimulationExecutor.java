@@ -8,4 +8,8 @@ public interface SimulationExecutor {
 	void stopSimulation();
 	
 	boolean isRunning();
+	
+	ESCondition getEndCondition();
+	
+	void setEndCondition(ESCondition cond);
 }

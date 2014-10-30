@@ -8,11 +8,14 @@ public class OnRequestDataServer implements DataServer<Void, SpaceSimulationReco
 
 	private SpaceSimulationRecord record;
 	private final Lock dataLock;
+	private final Lock executorLock;
 	private final Condition isNull;
 	private final Condition gimmeMoar;
+	private SimulationExecutor executor;
 	
 	public OnRequestDataServer() {
 		dataLock = new ReentrantLock();
+		executorLock = new ReentrantLock();
 		isNull = dataLock.newCondition();
 		gimmeMoar = dataLock.newCondition();
 		record = null;
@@ -44,6 +47,25 @@ public class OnRequestDataServer implements DataServer<Void, SpaceSimulationReco
 			e.printStackTrace();
 		} finally {
 			dataLock.unlock();
+		}
+	}
+	
+	public void setSimulationExecutor(SimulationExecutor executor) {
+		executorLock.lock();
+		try {
+			this.executor = executor;
+		} finally {
+			executorLock.unlock();
+		}
+	}
+
+	@Override
+	public boolean isListening() {
+		executorLock.lock();
+		try {
+			return executor == null ? false : executor.isRunning();
+		} finally {
+			executorLock.unlock();
 		}
 	}
 

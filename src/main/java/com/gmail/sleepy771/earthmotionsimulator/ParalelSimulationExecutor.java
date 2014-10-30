@@ -11,8 +11,10 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 
 	private SimulationSystem<?> s;
 	private ExecutorService threadPool;
+	private ESCondition endCondition;
 	private final Lock updateLock;
 	private final Lock runningCounterLock;
+	private final Lock endConditionLock;
 	private final Condition canRun;
 	private int planetsMoved;
 	private int running;
@@ -24,6 +26,7 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 		this.updateLock = new ReentrantLock();
 		canRun = updateLock.newCondition();
 		runningCounterLock = new ReentrantLock();
+		endConditionLock = new ReentrantLock();
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 				ps.addRunning();
 				Simulation sim = s.createSimualtion();
 				try {
-					while (s.getEndCondition().satisfies()) {
+					while (!ps.getEndCondition().satisfies()) {
 						sim.makeStep();
 						ps.notifyUpdate();
 						ps.awaitAll();
@@ -83,7 +86,7 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 
 	@Override
 	public void stopSimulation() {
-		s.getEndCondition().forceFalse();
+		getEndCondition().forceFalse();
 		try {
 			threadPool.awaitTermination(0, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
@@ -116,6 +119,26 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 	@Override
 	public SimulationSystem<?> getSystem() {
 		return s;
+	}
+
+	@Override
+	public ESCondition getEndCondition() {
+		endConditionLock.lock();
+		try {
+			return endCondition;
+		} finally {
+			endConditionLock.unlock();
+		}
+	}
+
+	@Override
+	public void setEndCondition(ESCondition cond) {
+		endConditionLock.lock();
+		try {
+			endCondition = cond;
+		} finally {
+			endConditionLock.unlock();
+		}
 	}
 
 }
