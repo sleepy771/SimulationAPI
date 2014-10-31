@@ -2,14 +2,9 @@ package com.gmail.sleepy771.earthmotionsimulator.ui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
-import java.sql.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -29,9 +24,9 @@ public class SolarSystemDrawable implements Drawable {
 	private final Runnable serverReader;
 	private boolean hasNormal;
 	private DrawableString calculatigNormalText;
-	private Map<Object, DrawableBody> drawableBodies;
+	private Map<Object, DrawableShape> drawableBodies;
 	private Object earthObject;
-	private AffineTransform affineTransformation;
+//	private AffineTransform affineTransformation;
 	private Thread readerThread;
 	
 	public SolarSystemDrawable(Object observableObject, int bufferSize, DataServer<Void, SpaceSimulationRecord> server, TransformationToSurface trans) {
@@ -88,7 +83,7 @@ public class SolarSystemDrawable implements Drawable {
 			SpaceSimulationRecord record = recordBuffer.take();
 			// TODO sem napisat kod na vykreslovanie trajektorie
 			for (Entry<Object, Body> entry : record.getBodies().entrySet()) {
-				DrawableBody db = drawableBodies.get(entry.getKey());
+				DrawableShape db = drawableBodies.get(entry.getKey());
 				db.setPosition(transformation.transformToSurface(entry.getValue().getPosition()));
 				db.draw(g2d);
 			}
@@ -98,19 +93,19 @@ public class SolarSystemDrawable implements Drawable {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void setAffineTransform(AffineTransform af) {
-		this.affineTransformation = af;
-		for (Entry<Object, DrawableBody> d : this.drawableBodies.entrySet()) {
-			d.getValue().setAffineTransform(affineTransformation);
-		}
-	}
-
-	@Override
-	public AffineTransform getAffineTransform() {
-		return this.affineTransformation;
-	}
+//
+//	@Override
+//	public void setAffineTransform(AffineTransform af) {
+//		this.affineTransformation = af;
+//		for (Entry<Object, DrawableShape> d : this.drawableBodies.entrySet()) {
+//			d.getValue().setAffineTransform(affineTransformation);
+//		}
+//	}
+//
+//	@Override
+//	public AffineTransform getAffineTransform() {
+//		return this.affineTransformation;
+//	}
 
 	@Override
 	public void setColor(Color c) {

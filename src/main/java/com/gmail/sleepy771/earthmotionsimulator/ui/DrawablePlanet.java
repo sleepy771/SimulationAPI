@@ -14,25 +14,25 @@ public class DrawablePlanet implements DrawableString, DrawableShape {
 	private final DrawableShape shape;
 	private final DrawableString text;
 	private AffineTransform transform;
-	private Point2D position;
 	
-	public DrawablePlanet(DrawableShape sh, DrawableString st) {
+	public DrawablePlanet(DrawableShape sh, DrawableString st, Point2D p) {
 		shape = sh;
 		text = st;
+		Dimension2D rect = sh.getSize();
+		text.setDisplacement(Math.hypot(rect.getHeight(), rect.getWidth()) + 5);
 		shape.setAffineTransform(getAffineTransform());
-		text.setAffineTransform(getAffineTransform());
+		setPosition(p);
 	}
 	
 	@Override
 	public void setPosition(Point2D p) {
-		text.setPosition(position);
-		shape.setPosition(position);
-		position = p;
+		text.setPosition(p);
+		shape.setPosition(p);
 	}
 
 	@Override
 	public Point2D getPosition() {
-		return position;
+		return shape.getPosition();
 	}
 
 	@Override
@@ -44,7 +44,6 @@ public class DrawablePlanet implements DrawableString, DrawableShape {
 	@Override
 	public void setAffineTransform(AffineTransform af) {
 		this.transform = af;
-		text.setAffineTransform(transform);
 		shape.setAffineTransform(transform);
 	}
 
@@ -82,13 +81,8 @@ public class DrawablePlanet implements DrawableString, DrawableShape {
 	}
 
 	@Override
-	public void setStroke(boolean stroke) {
-		shape.setStroke(stroke);
-	}
-
-	@Override
-	public void setStrokeWidth(double width) {
-		shape.setStrokeWidth(width);
+	public void setDrawStroke(boolean stroke) {
+		shape.setDrawStroke(stroke);
 	}
 
 	@Override
@@ -129,6 +123,16 @@ public class DrawablePlanet implements DrawableString, DrawableShape {
 	@Override
 	public Dimension2D getSize() {
 		return shape.getSize();
+	}
+
+	@Override
+	public void setDisplacement(double d) {
+		text.setDisplacement(d);
+	}
+
+	@Override
+	public double getDisplacement() {
+		return text.getDisplacement();
 	}
 
 }

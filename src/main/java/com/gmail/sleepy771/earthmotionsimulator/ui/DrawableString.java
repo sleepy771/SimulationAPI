@@ -10,4 +10,8 @@ public interface DrawableString extends PointDrawable {
 	void setFont(Font f);
 	
 	Font getFont();
+	
+	void setDisplacement(double d);
+	
+	double getDisplacement();
 }
