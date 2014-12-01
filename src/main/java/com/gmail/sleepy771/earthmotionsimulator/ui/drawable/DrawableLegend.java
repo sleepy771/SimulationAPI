@@ -177,14 +177,6 @@ public class DrawableLegend implements DrawableString, DrawableShape, ColoredDra
 	public Alignment getAlignment() {
 		return this.align;
 	}
-	
-	private void recalculateSize() {
-		//TODO make setSize
-	}
-	
-	private void recalculatePosition() {
-		
-	}
 
 	@Override
 	public Dimension2D getSize() {

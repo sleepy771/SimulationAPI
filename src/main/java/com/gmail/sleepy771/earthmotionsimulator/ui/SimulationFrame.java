@@ -1,35 +1,21 @@
 package com.gmail.sleepy771.earthmotionsimulator.ui;
 
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import com.gmail.sleepy771.earthmotionsimulator.Receiver;
 import com.gmail.sleepy771.earthmotionsimulator.RunConfiguration;
-import com.gmail.sleepy771.earthmotionsimulator.SolarSystem;
-import com.gmail.sleepy771.earthmotionsimulator.SpaceSimulationRecord;
-import com.gmail.sleepy771.earthmotionsimulator.objects.Planet;
-import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationExecutor;
-import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
-import com.gmail.sleepy771.earthmotionsimulator.simulation.impl.ParalelSimulationExecutor;
 import com.gmail.sleepy771.earthmotionsimulator.ui.GBCBuilder.GBCFill;
-import com.gmail.sleepy771.earthmotionsimulator.ui.drawable.ContentDrawable;
-import com.gmail.sleepy771.earthmotionsimulator.ui.drawable.Drawable;
 
 public class SimulationFrame {
 	private Canvas canvas;
