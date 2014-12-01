@@ -3,47 +3,30 @@ package com.gmail.sleepy771.earthmotionsimulator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.gmail.sleepy771.earthmotionsimulator.datastuct.Storage;
+import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
+import com.gmail.sleepy771.earthmotionsimulator.objects.Planet;
+import com.gmail.sleepy771.earthmotionsimulator.simulation.Simulation;
+import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
+
 public class SolarSystem implements SimulationSystem<Body> {
 	private Lock streamerLock;
-	private Condition hasNew;
 	private Iterator<Body> bodyIterator;
 	private List<Body> bodies;
 	private List<Body> movedBodies;
-	private DataServer<Void, SpaceSimulationRecord> server;
-	private Thread streamerThread;
-	private Runnable pusherRunnable;
+	private Storage<SpaceSimulationRecord> storage;
 	private double simulationTime;
 	private double dt;
 	
-	public SolarSystem(double startTime, double dt, List<Body> bodies, DataServer<Void, SpaceSimulationRecord> server, ESCondition endCondition) {
-		this.server = server;
+	public SolarSystem(double startTime, double dt, List<Body> bodies, Storage<SpaceSimulationRecord> storage) {
+		this.storage = storage;
 		this.bodies = new ArrayList<Body>(bodies);
 		streamerLock = new ReentrantLock();
-		hasNew = streamerLock.newCondition();
 		simulationTime = startTime;
 		this.dt = dt;
-		pusherRunnable = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					while (SolarSystem.this.server.isListening()) {
-						streamerLock.lock();
-						try {
-							hasNew.await();
-							SolarSystem.this.server.insertRecord(new SpaceSimulationRecord(getUnits(), getSimulationTime()));
-						} finally {
-							streamerLock.unlock();
-						}
-					}
-				} catch (InterruptedException ie) {
-					ie.printStackTrace();
-				}
-			}
-		};
 	}
 	
 	public double getSimulationTime() {
@@ -99,12 +82,6 @@ public class SolarSystem implements SimulationSystem<Body> {
 			movedBodies = new ArrayList<>();
 		return movedBodies;
 	}
-	
-	public Thread getStreamerThread() {
-		if (streamerThread != null || !streamerThread.isAlive())
-			streamerThread = new Thread(pusherRunnable);
-		return streamerThread;
-	}
 
 	@Override
 	public void fireUpdate() {
@@ -112,10 +89,20 @@ public class SolarSystem implements SimulationSystem<Body> {
 		try {
 			bodies = movedBodies;
 			movedBodies = null;
+			storage.push(new SpaceSimulationRecord(bodies, simulationTime));
 			simulationTime += dt;
-			hasNew.signal();
 		} finally {
 			streamerLock.unlock();
 		}
+	}
+
+	@Override
+	public void flush() {
+		bodyIterator = null;
+		streamerLock.unlock();
+		storage.flush();
+		bodies.clear();
+		movedBodies.clear();
+		streamerLock = null;
 	}
 }

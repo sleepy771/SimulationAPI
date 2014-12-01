@@ -10,4 +10,6 @@ public interface TransformationToSurface extends LinearTransformation {
 	void setSurfaceNormal(Matrix n);
 	
 	Point2D transformToSurface(Matrix vec);
+	
+	TransformationToSurface compose(TransformationToSurface t);
 }

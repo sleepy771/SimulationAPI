@@ -2,7 +2,7 @@ package com.gmail.sleepy771.earthmotionsimulator;
 
 import java.util.Iterator;
 
-class UnmodifiableIterator<T> implements Iterator<T> {
+public class UnmodifiableIterator<T> implements Iterator<T> {
 	
 	private final Iterator<T> innerIterator;
 	

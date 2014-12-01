@@ -19,21 +19,27 @@ import org.xml.sax.SAXException;
 
 import Jama.Matrix;
 
-import com.gmail.sleepy771.earthmotionsimulator.Body;
-import com.gmail.sleepy771.earthmotionsimulator.OnRequestDataServer;
-import com.gmail.sleepy771.earthmotionsimulator.ParalelSimulationExecutor;
-import com.gmail.sleepy771.earthmotionsimulator.Planet;
-import com.gmail.sleepy771.earthmotionsimulator.PlanetIdentificator;
-import com.gmail.sleepy771.earthmotionsimulator.SimulationExecutor;
-import com.gmail.sleepy771.earthmotionsimulator.SimulationSystem;
+import com.gmail.sleepy771.earthmotionsimulator.BodyID;
 import com.gmail.sleepy771.earthmotionsimulator.SolarSystem;
-import com.gmail.sleepy771.earthmotionsimulator.UnitConverter;
+import com.gmail.sleepy771.earthmotionsimulator.datastuct.Storage;
+import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
+import com.gmail.sleepy771.earthmotionsimulator.objects.Planet;
+import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
 
 public class XMLParser {
 	private final File file;
+	private Storage storage;
 
 	public XMLParser(File f) {
 		this.file = f;
+	}
+	
+	public void setStorage(Storage<?> s) {
+		this.storage = s;
+	}
+	
+	public Storage<?> getStorage() {
+		return this.storage;
 	}
 
 	public SimulationSystem<Body> parse() throws ParserConfigurationException,
@@ -80,13 +86,12 @@ public class XMLParser {
 					.getNamedItem("vy").getNodeValue());
 			momentum[2] = Double.valueOf(bodyNode.getAttributes()
 					.getNamedItem("vz").getNodeValue());
-			Matrix r = new Matrix(position, 3).times(UnitConverter.AU2M);
-			Matrix p = new Matrix(momentum, 3).times(mass * UnitConverter.AUPDAY2MPS);
-			bodies.add(new Planet(new PlanetIdentificator(name, id), mass, p, r));
+			//Matrix r = new Matrix(position, 3).times(UnitConverter.AU2M);
+			//Matrix p = new Matrix(momentum, 3).times(mass * UnitConverter.AUPDAY2MPS);
+			//bodies.add(new Planet(new PlanetIdentificator(name, id), mass, p, r));
 		}
 
-		system = new SolarSystem(startTime, dt, bodies,
-				new OnRequestDataServer(), null);
+		system = new SolarSystem(startTime, dt, bodies, storage);
 		return system;
 	}
 }

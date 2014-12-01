@@ -2,6 +2,11 @@ package com.gmail.sleepy771.earthmotionsimulator;
 
 import java.util.List;
 
+import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
+import com.gmail.sleepy771.earthmotionsimulator.objects.Planet;
+import com.gmail.sleepy771.earthmotionsimulator.simulation.Simulation;
+import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
+
 import Jama.Matrix;
 
 public class PlanetMotionSimulation implements Simulation {

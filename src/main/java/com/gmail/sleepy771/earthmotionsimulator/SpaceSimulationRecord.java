@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SpaceSimulationRecord implements Response {
+import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
+
+public class SpaceSimulationRecord implements Record {
 	
 	private final Map<Object, Body> bodies;
 	private final double time;
