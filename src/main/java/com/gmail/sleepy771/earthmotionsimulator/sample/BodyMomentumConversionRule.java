@@ -1,4 +1,4 @@
-package com.gmail.sleepy771.earthmotionsimulator.units.planet;
+package com.gmail.sleepy771.earthmotionsimulator.sample;
 
 import Jama.Matrix;
 

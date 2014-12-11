@@ -1,11 +1,14 @@
 package com.gmail.sleepy771.earthmotionsimulator;
 
+import com.gmail.sleepy771.earthmotionsimulator.datastuct.Storage;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationCondition;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationExecutor;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
 
 public interface RunConfiguration {
 	SimulationSystem<?> getSystem();
+	
+	Storage<?> getStorage();
 	
 	SimulationExecutor getExecutor();
 	

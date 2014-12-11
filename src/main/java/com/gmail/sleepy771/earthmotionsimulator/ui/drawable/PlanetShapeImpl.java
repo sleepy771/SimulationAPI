@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -18,6 +17,12 @@ public class PlanetShapeImpl implements DrawableShape {
 	private Color strokeColor;
 	private Stroke stroke;
 	private boolean fillShape, drawStroke;
+	
+	
+	public PlanetShapeImpl(Shape s, Point2D p) {
+		this.position = p;
+		this.shape = s;
+	}
 	
 	
 	@Override
@@ -68,29 +73,6 @@ public class PlanetShapeImpl implements DrawableShape {
 	}
 
 	@Override
-	public Dimension2D getSize() {
-		return new Dimension2D() {
-			
-			Rectangle2D rect = PlanetShapeImpl.this.shape.getBounds2D();
-			
-			@Override
-			public void setSize(double w, double h) {
-				rect.setRect(rect.getX(), rect.getY(), w, h);
-			}
-			
-			@Override
-			public double getWidth() {
-				return rect.getWidth();
-			}
-			
-			@Override
-			public double getHeight() {
-				return rect.getHeight();
-			}
-		};
-	}
-
-	@Override
 	public void setShape(Shape s) {
 		this.shape = s;
 	}
@@ -134,6 +116,12 @@ public class PlanetShapeImpl implements DrawableShape {
 	@Override
 	public AffineTransform getAffineTransform() {
 		return affineTransform;
+	}
+
+
+	@Override
+	public Shape getShape() {
+		return shape;
 	}
 
 }

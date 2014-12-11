@@ -4,9 +4,8 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
 
-public interface DrawableShape extends PositionableDrawable, ColoredDrawable {
+public interface DrawableShape extends PositionableDrawable, ColorizedDrawable {
 	void setShape(Shape s);
 	
 	void setFill(boolean fill);
@@ -21,9 +20,9 @@ public interface DrawableShape extends PositionableDrawable, ColoredDrawable {
 	
 	Color getFillColor();
 	
+	Shape getShape();
+	
 	void setAffineTransform(AffineTransform af);
 	
 	AffineTransform getAffineTransform();
-	
-	Dimension2D getSize();
 }

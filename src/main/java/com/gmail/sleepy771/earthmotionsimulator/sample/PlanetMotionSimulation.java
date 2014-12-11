@@ -1,9 +1,9 @@
-package com.gmail.sleepy771.earthmotionsimulator;
+package com.gmail.sleepy771.earthmotionsimulator.sample;
 
 import java.util.List;
 
 import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
-import com.gmail.sleepy771.earthmotionsimulator.objects.Planet;
+import com.gmail.sleepy771.earthmotionsimulator.objects.SystemUnit;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.Simulation;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
 
@@ -13,17 +13,17 @@ public class PlanetMotionSimulation implements Simulation {
 	private Planet body;
 	private final double G = 6.67e-11;
 	private double dt;
-	private SimulationSystem<Body> s; 
+	private SimulationSystem<Body, ParticleSystemRecord> s; 
 	
-	public PlanetMotionSimulation(SimulationSystem<Body> s, Planet b) {
+	public PlanetMotionSimulation(SimulationSystem<Body, ParticleSystemRecord> s, Planet b) {
 		this.s = s;
 		body = b;
 	}
 	
 	@Override
-	public void makeStep() {
+	public SystemUnit makeStep() {
 		List<Body> bodies = s.getUnits();
-		Matrix f = new Matrix(1,3);
+		Matrix f = new Matrix(3,1);
 		Matrix newPosistion = body.getPosition().plus(body.getSpeed().times(dt));
 		for (Body otherBody : bodies) {
 			if (this.body != otherBody) {
@@ -34,7 +34,8 @@ public class PlanetMotionSimulation implements Simulation {
 			}
 		}
 		Matrix newMomentum = body.getMomentum().plus(f.times(dt));
-		s.getMovedUnits().add(body = new Planet(this.body, newMomentum, newPosistion));
+		body = new Planet(this.body, newMomentum, newPosistion);
+		return body;
 	}
 
 	@Override

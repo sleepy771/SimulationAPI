@@ -22,8 +22,9 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 	private final Lock endConditionLock;
 	private final Condition canRun;
 	private int planetsMoved;
+	private int unitsInSystem;
 	private int running;
-	
+
 	public ParalelSimulationExecutor() {
 		this(null);
 	}
@@ -31,6 +32,8 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 	public ParalelSimulationExecutor(SimulationSystem<?> sys) {
 		threadPool = Executors.newCachedThreadPool();
 		this.system = sys;
+		if (sys != null)
+			unitsInSystem = sys.getUnits().size();
 		running = 0;
 		this.updateLock = new ReentrantLock();
 		canRun = updateLock.newCondition();
@@ -41,26 +44,29 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 	@Override
 	public void runSimulation() {
 		if (this.system == null)
-			throw new UnsupportedOperationException("Symulation system wasn't set, set it first to run simulation!");
+			throw new UnsupportedOperationException(
+					"Simulation system wasn't set, set it first to run simulation!");
 		for (; system.canCreateSimulation();) {
-			threadPool.execute(createPlanetThread(system, this));
+			System.out.println("creating simulation");
+			threadPool.execute(createPlanetThread(system.createSimualtion(),
+					this));
 		}
 	}
 
-	private static Runnable createPlanetThread(final SimulationSystem<?> s,
+	private static Runnable createPlanetThread(final Simulation s,
 			final ParalelSimulationExecutor ps) {
 		return new Runnable() {
 			@Override
 			public void run() {
-				if (!s.canCreateSimulation())
-					return;
 				ps.addRunning();
-				Simulation sim = s.createSimualtion();
 				try {
-					while (!ps.getEndCondition().satisfies()) {
-						sim.makeStep();
-						ps.notifyUpdate();
-						ps.awaitAll();
+					int stepCount = 0;
+					while (ps.getEndCondition().satisfies()) {
+						System.out.println("new step");
+						s.makeStep();
+						System.out.println("did step " + stepCount++);
+						ps.notifyUpdate(stepCount - 1);
+						System.out.println("update notified");
 					}
 				} catch (InterruptedException ie) {
 					ie.printStackTrace();
@@ -70,29 +76,20 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 		};
 	}
 
-	private void notifyUpdate() {
+	private void notifyUpdate(int step) throws InterruptedException {
 		updateLock.lock();
-		try {
-			if (planetsMoved == 0)
-				planetsMoved = system.getUnits().size();
-			planetsMoved--;
-			if (planetsMoved == 0) {
-				canRun.signalAll();
-				system.fireUpdate();
-			}
-		} finally {
-			updateLock.unlock();
+		if (planetsMoved == 0) {
+			planetsMoved = unitsInSystem;
 		}
-	}
-
-	private void awaitAll() throws InterruptedException {
-		updateLock.lock();
-		try {
-			if (planetsMoved != 0)
-				canRun.await();
-		} finally {
-			updateLock.unlock();
+		planetsMoved--;
+		if (planetsMoved == 0) {
+			System.out.println("update fired!! " + step);
+			canRun.signalAll();
+			system.performUpdate();
+		} else {
+			canRun.await();
 		}
+		updateLock.unlock();
 	}
 
 	@Override
@@ -104,13 +101,13 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private final void addRunning() {
 		runningCounterLock.lock();
 		running++;
 		runningCounterLock.unlock();
 	}
-	
+
 	private final void removeRunning() {
 		runningCounterLock.lock();
 		running--;
@@ -155,6 +152,7 @@ public class ParalelSimulationExecutor implements SimulationExecutor {
 	@Override
 	public void setSimulationSystem(SimulationSystem<?> system) {
 		this.system = system;
+		unitsInSystem = system.getUnits().size();
 	}
 
 }

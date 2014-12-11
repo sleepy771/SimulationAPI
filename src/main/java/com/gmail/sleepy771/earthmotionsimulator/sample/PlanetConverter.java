@@ -1,9 +1,8 @@
-package com.gmail.sleepy771.earthmotionsimulator.units.planet;
+package com.gmail.sleepy771.earthmotionsimulator.sample;
 
 import Jama.Matrix;
 
 import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
-import com.gmail.sleepy771.earthmotionsimulator.objects.Planet;
 import com.gmail.sleepy771.earthmotionsimulator.units.ConversionRule;
 import com.gmail.sleepy771.earthmotionsimulator.units.Unit;
 import com.gmail.sleepy771.earthmotionsimulator.units.UnitConverter;

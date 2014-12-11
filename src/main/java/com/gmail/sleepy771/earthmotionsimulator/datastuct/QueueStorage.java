@@ -10,6 +10,10 @@ public class QueueStorage<T extends Record> implements Storage<T> {
 
 	private LinkedList<T> records;
 	
+	public QueueStorage() {
+		records = new LinkedList<>();
+	}
+	
 	@Override
 	public Iterator<T> iterator() {
 		return new UnmodifiableIterator<>(records.iterator());

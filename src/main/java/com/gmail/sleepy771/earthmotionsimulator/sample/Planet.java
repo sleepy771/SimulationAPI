@@ -1,4 +1,6 @@
-package com.gmail.sleepy771.earthmotionsimulator.objects;
+package com.gmail.sleepy771.earthmotionsimulator.sample;
+
+import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
 
 import Jama.Matrix;
 

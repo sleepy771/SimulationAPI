@@ -1,7 +1,9 @@
 package com.gmail.sleepy771.earthmotionsimulator.simulation;
 
+import com.gmail.sleepy771.earthmotionsimulator.objects.SystemUnit;
+
 public interface Simulation {
-	void makeStep();
+	SystemUnit makeStep();
 	
 	void setTimeDelta(double time);
 	

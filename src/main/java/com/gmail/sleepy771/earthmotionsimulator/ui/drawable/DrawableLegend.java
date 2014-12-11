@@ -6,11 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.Date;
 
-public class DrawableLegend implements DrawableString, DrawableShape, ColoredDrawable, PositionableDrawable {
+public class DrawableLegend implements DrawableString, DrawableShape, ColorizedDrawable, PositionableDrawable {
 	
 	enum Alignment {
 		TOP, BOTTOM, LEFT, RIGHT, TOP_RIGHT, BOTTOM_RIGHT, TOP_LEFT, BOTTOM_LEFT, CENTER, FIXED;
@@ -179,9 +178,8 @@ public class DrawableLegend implements DrawableString, DrawableShape, ColoredDra
 	}
 
 	@Override
-	public Dimension2D getSize() {
-		// TODO Auto-generated method stub
-		return null;
+	public Shape getShape() {
+		return shape.getShape();
 	}
 
 }

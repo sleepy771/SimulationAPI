@@ -3,9 +3,9 @@ package com.gmail.sleepy771.earthmotionsimulator.simulation;
 public interface SimulationExecutor {
 	void runSimulation();
 	
-	SimulationSystem<?> getSystem();
+	SimulationSystem<?, ?> getSystem();
 	
-	void setSimulationSystem(SimulationSystem<?> system);
+	void setSimulationSystem(SimulationSystem<?, ?> system);
 
 	void stopSimulation();
 	

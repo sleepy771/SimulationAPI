@@ -1,4 +1,4 @@
-package com.gmail.sleepy771.earthmotionsimulator.units.planet;
+package com.gmail.sleepy771.earthmotionsimulator.sample;
 
 import com.gmail.sleepy771.earthmotionsimulator.objects.Body;
 import com.gmail.sleepy771.earthmotionsimulator.units.AbstractNumberConverionRule;

@@ -1,4 +1,4 @@
-package com.gmail.sleepy771.earthmotionsimulator.units.planet;
+package com.gmail.sleepy771.earthmotionsimulator.sample;
 
 import Jama.Matrix;
 
@@ -8,7 +8,6 @@ import com.gmail.sleepy771.earthmotionsimulator.units.AmountConverter;
 import com.gmail.sleepy771.earthmotionsimulator.units.BaseAmountHandlerImpl;
 import com.gmail.sleepy771.earthmotionsimulator.units.ConversionRule;
 import com.gmail.sleepy771.earthmotionsimulator.units.Unit;
-import com.gmail.sleepy771.earthmotionsimulator.units.UnitType;
 
 public class BodyPositionConversionRule extends
 		AbstractMatrixConversionRule<Body> implements
@@ -24,9 +23,9 @@ public class BodyPositionConversionRule extends
 	}
 
 	public static BodyPositionConversionRule createRule(AmountConverter<Matrix> h, Unit u) {
-		if (u.getType() != UnitType.COMPOSED) {
-			throw new IllegalArgumentException("Unit have to be of type UnitType.COMPOSED");
-		}
+//		if (u.getType() != UnitType.COMPOSED) {
+//			throw new IllegalArgumentException("Unit have to be of type UnitType.COMPOSED instead of is: "+u.getType().toString());
+//		}
 		return new BodyPositionConversionRule(h, u);
 	}
 	

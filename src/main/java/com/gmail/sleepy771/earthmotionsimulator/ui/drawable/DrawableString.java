@@ -2,7 +2,7 @@ package com.gmail.sleepy771.earthmotionsimulator.ui.drawable;
 
 import java.awt.Font;
 
-public interface DrawableString extends PositionableDrawable, ColoredDrawable {
+public interface DrawableString extends PositionableDrawable, ColorizedDrawable {
 	void setText(String str);
 	
 	String getText();
