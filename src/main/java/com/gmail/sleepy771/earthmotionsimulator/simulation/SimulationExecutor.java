@@ -1,17 +1,20 @@
 package com.gmail.sleepy771.earthmotionsimulator.simulation;
 
-public interface SimulationExecutor {
-	void runSimulation();
-	
-	SimulationSystem<?, ?> getSystem();
-	
-	void setSimulationSystem(SimulationSystem<?, ?> system);
+import java.util.List;
 
-	void stopSimulation();
+public interface SimulationExecutor {
+	
+	void start();
+	
+	void add(Simulation s);
+	
+	boolean isRunning(Simulation s);
 	
 	boolean isRunning();
+
+	void terminateAll();
 	
-	SimulationCondition getEndCondition();
+	void terminate(Simulation s);
 	
-	void setEndCondition(SimulationCondition cond);
+	List<Simulation> listAll();
 }

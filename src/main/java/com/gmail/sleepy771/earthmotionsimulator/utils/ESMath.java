@@ -15,4 +15,33 @@ public class ESMath {
 		};
 		return new Matrix(c, 3);
 	}
+	
+	public static final boolean approxEquals(Matrix u, Matrix v, double err) {
+		Matrix comp = u.minus(v);
+		double[] columnPackedComparisonMatrix = comp.getColumnPackedCopy();
+		for (int k=0; k < columnPackedComparisonMatrix.length; k++)
+			if (Math.abs(columnPackedComparisonMatrix[k]) > err)
+				return false;
+		return true;
+	}
+	
+	public static String toString(Matrix m) {
+		StringBuilder sb = new StringBuilder("[");
+		int rows = m.getRowDimension();
+		int columns = m.getColumnDimension();
+		for (int r = 0; r < rows; r++) {
+			sb.append("[");
+			for (int c = 0; c < columns; c++) {
+				sb.append(m.get(r, c));
+				if (c < columns)
+					sb.append(", ");
+			}
+			sb.append("]");
+			if (r < rows-1)
+				sb.append(";\n");
+			else
+				sb.append("]");
+		}
+		return sb.toString();
+	}
 }

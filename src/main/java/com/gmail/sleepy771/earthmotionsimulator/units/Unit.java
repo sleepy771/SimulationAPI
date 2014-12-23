@@ -23,7 +23,7 @@ public interface Unit {
 		public final double getMultiplierTo(Unit u) {
 			if (!this.isSameAs(u))
 				throw new IllegalArgumentException("Wrong unit type");
-			return u.getMultiplier()/this.getMultiplier();
+			return getMultiplier()/u.getMultiplier();
 		}
 	}
 	

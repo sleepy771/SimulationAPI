@@ -1,6 +1,8 @@
 package com.gmail.sleepy771.earthmotionsimulator;
 
-import com.gmail.sleepy771.earthmotionsimulator.datastuct.Storage;
+import java.util.List;
+
+import com.gmail.sleepy771.earthmotionsimulator.simulation.Simulation;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationCondition;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationExecutor;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
@@ -8,11 +10,11 @@ import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
 public interface RunConfiguration {
 	SimulationSystem<?> getSystem();
 	
-	Storage<?> getStorage();
-	
 	SimulationExecutor getExecutor();
 	
-	SimulationCondition getEndCondition();
+	SimulationCondition getRunCondition();
+	
+	List<Simulation> getSimulations();
 	
 	void beforeStart();
 	

@@ -1,59 +1,69 @@
 package com.gmail.sleepy771.earthmotionsimulator;
 
-import com.gmail.sleepy771.earthmotionsimulator.datastuct.Storage;
-import com.gmail.sleepy771.earthmotionsimulator.objects.SystemUnit;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.gmail.sleepy771.earthmotionsimulator.simulation.Simulation;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationCondition;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationExecutor;
 import com.gmail.sleepy771.earthmotionsimulator.simulation.SimulationSystem;
+import com.gmail.sleepy771.earthmotionsimulator.simulation.impl.SimulationFactory;
 
-public abstract class AbstractRunConfiguration<SYSTYPE extends SystemUnit, STORTYPE extends Record> implements RunConfiguration {
+public abstract class AbstractRunConfiguration implements RunConfiguration {
 
-	private SimulationSystem<SYSTYPE> system;
+	private SimulationSystem<?> system;
+	private SimulationCondition runCondition;
 	private SimulationExecutor executor;
-	private SimulationCondition condition;
-	private Storage<STORTYPE> storage;
+	
+	protected AbstractRunConfiguration() {
+		beforeStart();
+	}
 	
 	@Override
-	public final SimulationSystem<SYSTYPE> getSystem() {
+	public final SimulationSystem<?> getSystem() {
 		if (system == null)
 			system = createSystem();
 		return system;
 	}
-	
-	protected abstract SimulationSystem<SYSTYPE> createSystem();
-	
-	protected abstract SimulationExecutor createExceutor();
-	
-	protected abstract SimulationCondition createCondition();
 
-	protected abstract Storage<STORTYPE> createStorage();
-	
 	@Override
 	public final SimulationExecutor getExecutor() {
 		if (executor == null)
-			executor = createExceutor();
-		executor.setSimulationSystem(getSystem());
-		executor.setEndCondition(getEndCondition());
+			executor = createExecutor();
 		return executor;
 	}
 
 	@Override
-	public final SimulationCondition getEndCondition() {
-		if (condition == null)
-			condition = createCondition();
-		return condition;
+	public final SimulationCondition getRunCondition() {
+		if (runCondition == null)
+			runCondition = createRunCondition();
+		return runCondition;
 	}
 	
 	@Override
-	public final Storage<STORTYPE> getStorage() {
-		if (storage == null)
-			storage = createStorage();
-		return storage;
+	public final List<Simulation> getSimulations() {
+		if (useFactory()) {
+			List<Simulation> sims = new LinkedList<>();
+			System.out.println("getting simulations list");
+			while (getFactory().canCreate()) {
+				System.out.println("creating simulation");
+				sims.add(getFactory().createSimulation());
+			}
+			return sims;
+		}
+		return listSimulations();
 	}
 	
-	protected final void releasAll() {
-		this.system = null;
-		this.condition = null;
-		this.executor = null;
-	}
+	protected abstract SimulationSystem<?> createSystem();
+	
+	protected abstract SimulationExecutor createExecutor();
+	
+	protected abstract SimulationCondition createRunCondition();
+	
+	protected abstract boolean useFactory();
+	
+	protected abstract SimulationFactory getFactory();
+	
+	protected abstract List<Simulation> listSimulations();
+
 }
