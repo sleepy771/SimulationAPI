@@ -51,7 +51,7 @@ public class SlickShapeDrawable implements SlickPositionableDrawable {
 	}
 	
 	public void setShape(Shape s) {
-		if (shape == null) {
+		if (s == null) {
 			shape = new Rectangle(0f, 0f, 20f, 20f);
 			return;
 		}

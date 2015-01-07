@@ -29,7 +29,7 @@ public class SlickTrackingLine implements SlickPositionableDrawable {
 	
 	private void createListWithPoints(List<? extends Point2D> l) {
 		path = new LinkedList<>();
-		if (l == null)
+		if (l != null)
 			path.addAll(l);
 	}
 	
