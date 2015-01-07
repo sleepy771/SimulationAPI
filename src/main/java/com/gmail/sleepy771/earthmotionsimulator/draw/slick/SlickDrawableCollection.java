@@ -2,6 +2,8 @@ package com.gmail.sleepy771.earthmotionsimulator.draw.slick;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,9 +18,25 @@ public class SlickDrawableCollection implements SlickPositionableDrawable {
 	private Point2D position;
 	
 	public SlickDrawableCollection() {
+		this((List<? extends SlickPositionableDrawable>) null);
+	}
+	
+	public SlickDrawableCollection(Collection<? extends SlickPositionableDrawable> c) {
 		listLock = new ReentrantLock();
 		positionLock = new ReentrantLock();
-		drawableList = new ArrayList<>();
+		createListAndInsertElements(c);
+	}
+	
+	public SlickDrawableCollection(SlickPositionableDrawable... ds) {
+		this(Arrays.asList(ds));
+	}
+	
+	private void createListAndInsertElements(Collection<? extends SlickPositionableDrawable> c) {
+		if (c == null || c.isEmpty()) {
+			drawableList = new ArrayList<>();
+			return;
+		}
+		drawableList = new ArrayList<>(c);
 	}
 	
 	@Override
