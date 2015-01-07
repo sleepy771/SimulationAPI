@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
 public class SlickShapeDrawable implements SlickPositionableDrawable {
@@ -11,8 +12,23 @@ public class SlickShapeDrawable implements SlickPositionableDrawable {
 	private Color fillColor, strokeColor;
 	private float thicknes;
 	
+	public SlickShapeDrawable() {
+		this(null, null, null, 1f);
+	}
+	
 	public SlickShapeDrawable(Shape s) {
-		shape = s;
+		this(s, null, null, 1f);
+	}
+	
+	public SlickShapeDrawable(Shape s, Color fC) {
+		this(s, fC, null, 1f);
+	}
+	
+	public SlickShapeDrawable(Shape s, Color fC, Color sC, float t) {
+		setShape(s);
+		setColor(fC);
+		setStrokeColor(sC);
+		setThicknes(t);
 	}
 	
 	@Override
@@ -27,10 +43,18 @@ public class SlickShapeDrawable implements SlickPositionableDrawable {
 	}
 	
 	public void setColor(Color c) {
+		if (c == null) {
+			fillColor = Color.white;
+			return;
+		}
 		fillColor = c;
 	}
 	
 	public void setShape(Shape s) {
+		if (shape == null) {
+			shape = new Rectangle(0f, 0f, 20f, 20f);
+			return;
+		}
 		shape = s;
 	}
 	
@@ -38,8 +62,16 @@ public class SlickShapeDrawable implements SlickPositionableDrawable {
 		strokeColor = c;
 	}
 	
-	public void setStrokeThicknes(float w) {
+	public void setThicknes(float w) {
+		if (w <= 0f) {
+			thicknes = 1f;
+			return;
+		}
 		thicknes = w;
+	}
+	
+	public Shape getShape() {
+		return shape;
 	}
 	
 	@Override

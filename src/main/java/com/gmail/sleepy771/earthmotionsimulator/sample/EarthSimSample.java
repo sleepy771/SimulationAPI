@@ -36,35 +36,11 @@ public class EarthSimSample {
 		for (Body b : rc.getBodies()) {
 			SlickPositionableDrawable draw = null;
 			if (b.getId() == rc.getObserved()) {
-				SlickDrawableCollection d = new SlickDrawableCollection();
-				SlickTrackingLine l = new SlickTrackingLine();
-				l.setColor(Color.red);
-				l.setLineThicknes(2f);
-				d.addDrawable(l);
-				// I know there are such things as constructors, but i am too lazy to refacktor my code ;-)
-				SlickShapeDrawable planet = new SlickShapeDrawable(new Ellipse(0, 0, 10, 10));
-				planet.setColor(Color.red);
-				planet.setStrokeColor(Color.red);
-				planet.setStrokeThicknes(1f);
-				d.addDrawable(planet);
-				draw = d;
+				draw = new SlickDrawableCollection(new SlickTrackingLine(Color.red, 2f), new SlickShapeDrawable(new Ellipse(0, 0, 10, 10), Color.red, Color.red, 1f));
 			} else if (b.getId().toString().equals("Sun")) {
-				SlickDrawableCollection d = new SlickDrawableCollection();
-				SlickTrackingLine l = new SlickTrackingLine();
-				l.setColor(Color.red);
-				l.setLineThicknes(2f);
-				d.addDrawable(l);
-				// I know there are such things as constructors, but i am too lazy to refacktor my code ;-)
-				SlickShapeDrawable planet = new SlickShapeDrawable(new Ellipse(0, 0, 20, 20));
-				planet.setColor(Color.orange);
-				planet.setStrokeColor(Color.orange);
-				planet.setStrokeThicknes(1f);
-				d.addDrawable(planet);
-				draw = d;
+				draw = new SlickDrawableCollection(new SlickTrackingLine(Color.yellow, 2f), new SlickShapeDrawable(new Ellipse(0, 0, 20, 20), Color.yellow, Color.yellow, 1f));
 			} else {
-				SlickShapeDrawable d = new SlickShapeDrawable(new Ellipse(0,0,5,5));
-				d.setColor(Color.white);
-				draw = d;
+				draw = new SlickShapeDrawable(new Ellipse(0,0,5,5));
 			}
 			animation.putDrawable(b.getId(), draw);
 		}

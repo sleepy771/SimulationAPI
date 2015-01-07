@@ -14,18 +14,42 @@ public class SlickTrackingLine implements SlickPositionableDrawable {
 	private Color lineColor;
 	
 	public SlickTrackingLine() {
+		this(null, 1f, null);
+	}
+	
+	public SlickTrackingLine(Color c, float t) {
+		this(c, t, null);
+	}
+	
+	public SlickTrackingLine(Color c, float t, List<? extends Point2D> l) {
+		setColor(c);
+		setThicknes(t);
+		createListWithPoints(l);
+	}
+	
+	private void createListWithPoints(List<? extends Point2D> l) {
 		path = new LinkedList<>();
+		if (l == null)
+			path.addAll(l);
 	}
 	
 	public final void addPosition(Point2D p) {
 		path.add(p);
 	}
 	
-	public final void setLineThicknes(float t) {
+	public final void setThicknes(float t) {
+		if (t <= 0.) {
+			thicknes = 1f;
+			return;
+		}
 		thicknes = t;
 	}
 	
 	public final void setColor(Color c) {
+		if (c == null) {
+			lineColor = Color.white;
+			return;
+		}
 		lineColor = c;
 	}
 
