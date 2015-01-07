@@ -13,8 +13,12 @@ public class SimulationRenderer extends BasicGame {
 	private boolean antiAliasing = false;
 	private Color backgound = Color.black;
 	
+	public SimulationRenderer(String name) {
+		super(name);
+	}
+	
 	public SimulationRenderer() {
-		super("BasicSimWindow");
+		this("Simulation");
 	}
 	
 	public void setDrawable(SlickDrawable d) {

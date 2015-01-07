@@ -22,7 +22,7 @@ public class EarthSimSample {
 		
 		Dimension windowSize = new Dimension(1000, 600);
 		
-		SimulationRenderer renderer = new SimulationRenderer();
+		SimulationRenderer renderer = new SimulationRenderer("Solar system simulation");
 		AppGameContainer container = new AppGameContainer(renderer);
 		container.setDisplayMode(windowSize.width, windowSize.height, false);
 		
